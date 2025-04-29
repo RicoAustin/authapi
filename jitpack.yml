@@ -1,0 +1,26 @@
+jdk:
+  - openjdk11  # 仅占位，实际不需要编译
+
+before_install:
+  # 创建 Maven 目录结构
+  - mkdir -p com/example/authapi/1.0.0
+  # 复制 AAR 文件到 Maven 路径
+  - cp w_auth-release_v153_sec.aar com/example/authapi/1.0.0/authapi-1.0.0.aar
+  # 生成 pom.xml（需手动创建或动态生成）
+  - echo '<?xml version="1.0" encoding="UTF-8"?>
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>authapi</artifactId>
+  <version>1.0.0</version>
+  <packaging>aar</packaging>
+  </project>' > com/example/authapi/1.0.0/authapi-1.0.0.pom
+
+install:
+  # 跳过所有构建步骤
+  - echo "Skipping build, using pre-built AAR directly."
+
+# 将生成的 Maven 目录打包为构件
+after_script:
+  - mkdir -p build/libs
+  - tar czf build/libs/maven-artifacts.tar.gz com/
